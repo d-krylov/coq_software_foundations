@@ -73,8 +73,8 @@ Proof.
   - intros. induction H.
     + apply even_0.
     + apply even_SS. apply even_0.
-    + Admitted.
-
+    + apply even_sum. apply IHeven_new1. apply IHeven_new2.
+Qed. 
 
 (* Exercise: 3 stars, advanced, especially useful (ev_ev__ev) *)
 
@@ -85,3 +85,120 @@ Proof.
   Admitted.
  
 End EvenPlayground.
+
+
+Module LessPlayground.
+
+Inductive Less : nat -> nat -> Prop :=
+  | Less_n (n : nat) : Less n n
+  | Less_S (n m : nat) (H : Less n m) : Less n (S m).
+
+Notation "n <= m" := (Less n m).
+
+Lemma le_trans: forall m n o,
+  m <= n -> n <= o -> m <= o.
+Proof.
+  intros. induction H0.
+  - apply H.
+  - apply Less_S. apply IHLess. apply H.
+Qed.
+
+Theorem O_le_n : forall n,
+  0 <= n.
+Proof.
+  intros. induction n.
+  - apply Less_n.
+  - apply Less_S. apply IHn.
+Qed.
+
+Theorem n_le_m__Sn_le_Sm: forall n m,
+  n <= m -> S n <= S m.
+Proof.
+  intros. induction H.
+  - apply Less_n.
+  - apply Less_S. apply IHLess.
+Qed.
+
+Theorem Sn_le_Sm__n_le_m: forall n m,
+  S n <= S m -> n <= m.
+Proof.
+  intros. Admitted.
+
+Theorem lt_ge_cases: forall n m,
+  n < m \/ n >= m.
+Proof.
+  intros. induction m. Admitted.
+
+Theorem le_plus_l: forall a b,
+  a <= a + b.
+Proof.
+  intros. induction b.
+  - rewrite Nat.add_0_r. apply Less_n.
+  - rewrite <- plus_n_Sm. apply Less_S. apply IHb.
+Qed.
+
+Theorem plus_le: forall n1 n2 m,
+  n1 + n2 <= m -> n1 <= m /\ n2 <= m.
+Proof.
+  intros. split.
+  - apply le_trans with (n1 + n2). apply le_plus_l. apply H.
+  - apply le_trans with (n2 + n1). apply le_plus_l. rewrite Nat.add_comm. apply H.
+Qed.
+
+Theorem add_le_cases: forall n m p q,
+  n + m <= p + q -> n <= p \/ m <= q.
+Proof.
+  intros. induction n.
+  - left. apply O_le_n.
+  - simpl in H. apply plus_le with (1) (n + m) (p + q) in H. destruct H.
+    Admitted.
+
+
+Theorem plus_le_compat_l: forall n m p,
+  n <= m -> p + n <= p + m.
+Proof.
+  intros. induction n.
+  - rewrite Nat.add_0_r. apply le_plus_l.
+  - rewrite <- plus_n_Sm. 
+Admitted.
+
+Theorem plus_le_compat_r: forall n m p,
+  n <= m -> n + p <= m + p.
+Proof.
+  Admitted.
+
+Theorem le_plus_trans: forall n m p,
+  n <= m -> n <= m + p.
+Proof.
+   Admitted.
+
+Theorem n_lt_m__n_le_m: forall n m,
+  n < m -> n <= m.
+Proof.
+  Admitted.
+
+Theorem plus_lt : forall n1 n2 m,
+  n1 + n2 < m -> n1 < m /\ n2 < m.
+Proof.
+ Admitted.
+
+Theorem leb_complete : forall n m,
+  n <=? m = true -> n <= m.
+Proof.
+ Admitted.
+
+Theorem leb_correct : forall n m,
+  n <= m -> n <=? m = true.
+Proof.
+  Admitted.
+
+Theorem leb_true_trans : forall n m o,
+  n <=? m = true -> m <=? o = true -> n <=? o = true.
+Proof.
+ Admitted.
+ 
+
+End LessPlayground.
+
+
+

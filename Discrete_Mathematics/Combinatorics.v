@@ -75,7 +75,9 @@ Print Permutation.
 Lemma everywhere_perm : forall A (l1 l2 : list A) (x : A),
   In l2 (everywhere x l1) -> Permutation (x :: l1) l2.
 Proof.
-  intros. Admitted.
+  intros. induction l2.
+  - intros. give_up.
+  - 
 
 Theorem permutations_complete : forall A (l1 l2 : list A),
   In l1 (permutations l2) -> Permutation l1 l2.

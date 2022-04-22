@@ -17,3 +17,10 @@ Lemma proj2 : forall P Q : Prop,
 Proof.
   intros. destruct H. apply H0.
 Qed.
+
+Theorem and_assoc : forall P Q R: Prop,
+  P /\ (Q /\ R) -> (P /\ Q) /\ R.
+Proof.
+  intros P Q R [HP [HQ HR]]. 
+  repeat split. apply HP. apply HQ. apply HR.
+Qed.
