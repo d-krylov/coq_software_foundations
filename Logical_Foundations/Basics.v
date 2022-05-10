@@ -121,6 +121,8 @@ Fixpoint eqb (n m : nat) : bool :=
             end
 end.
 
+Notation "x =? y" := (eqb x y) (at level 70): nat_scope.
+
 (* Exercise: 1 star, standard (plus_id_exercise) *)
 
 Theorem plus_id_exercise : forall n m o : nat,
@@ -143,6 +145,13 @@ Proof.
   rewrite <- mult_n_O.
   reflexivity.
 Qed.
+
+Theorem negb_involutive: forall b: bool,
+  negb (negb b) = b.
+Proof.
+  intros b. destruct b eqn:E.
+  - reflexivity.
+  - reflexivity. Qed.
 
 
  

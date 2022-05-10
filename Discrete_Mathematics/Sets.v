@@ -74,6 +74,33 @@ Proof.
   - intros. apply P_member_spec. apply H.
 Qed.
 
-
 Definition subset {X : Type} (S1 S2 : set X): Prop :=
   forall x, Member x S1 -> Member x S2.
+
+Lemma empty_subset: forall X (S: set X),
+  subset Empty S.
+Proof.
+  unfold subset. intros. Admitted.
+
+Definition injective {A B : Type} (f: A -> B): Prop :=
+  forall x y: A, f x = f y -> x = y.
+
+Definition surjective {A B: Type} (f: A -> B): Prop :=
+  forall y, exists x, f x = y.
+
+Definition bijective {A B : Type} (f: A -> B): Prop :=
+  injective f /\ surjective f.
+
+Definition same_cardinality (X Y: Type): Prop :=
+  exists f: X -> Y, bijective f.
+Admitted.
+
+Lemma bool_nat_cardinality: not (same_cardinality bool nat).
+Proof.
+  unfold not. intros [f [Hi Hs]].
+  Admitted.
+
+
+Definition countable (X: Type): Prop :=
+  (exists f: X -> nat, injective f) \/
+  (exists f: nat -> X, surjective f).

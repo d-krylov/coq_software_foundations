@@ -47,6 +47,8 @@ Fixpoint everywhere {A: Type} (a: A) (ls: list A): list (list A) :=
   | h :: t => (a :: ls) :: (map (fun ts => h :: ts) (everywhere a t))
 end.
 
+Compute (everywhere 4 [1;2;3]).
+
 Fixpoint concat_map {A B: Type} (f: A -> list B) (l: list A): list B :=
   match l with
   | [] => []
@@ -69,15 +71,13 @@ Proof.
     + destruct IHl. apply i. destruct H0. exists x. split.
       apply H0. simpl. right. apply H1.
 Qed.
- 
-Print Permutation.    
 
 Lemma everywhere_perm : forall A (l1 l2 : list A) (x : A),
   In l2 (everywhere x l1) -> Permutation (x :: l1) l2.
 Proof.
-  intros. induction l2.
-  - intros. give_up.
-  - 
+  intros. induction (everywhere x l1).
+  - give_up.
+  - apply IHl. simpl in H. destruct H.
 
 Theorem permutations_complete : forall A (l1 l2 : list A),
   In l1 (permutations l2) -> Permutation l1 l2.
